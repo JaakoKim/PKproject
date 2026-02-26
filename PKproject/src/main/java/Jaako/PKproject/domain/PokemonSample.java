@@ -23,7 +23,7 @@ public class PokemonSample {
     // [중요] 이 샘플을 작성한 유저와 연결 (다대일 관계)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member member;
+    private Party party;
 
     // 가입 날짜처럼 생성 시간도 있으면 관리하기 편하겠죠?
     // 나중에 공통 시간 엔티티로 분리할 수도 있지만 일단은 필드로 넣겠습니다.
