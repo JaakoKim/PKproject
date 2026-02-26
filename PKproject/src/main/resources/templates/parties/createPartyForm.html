@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>파티 등록</title>
+    <style>
+        .pokemon-card { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>남의 파티 기록하기</h1>
+    <form th:action="@{/parties/new}" th:object="${partyForm}" method="post">
+        <div>
+            <label>트레이너 이름:</label>
+            <input type="text" th:field="*{trainerName}" placeholder="예: 박세준">
+        </div>
+        <div>
+            <label>파티 설명:</label>
+            <input type="text" th:field="*{partyDescription}" placeholder="예: 시즌 1위 파티">
+        </div>
+
+        <hr>
+        <h3>포켓몬 엔트리 (6마리)</h3>
+        <div th:each="sample, stat : *{pokemonSamples}" class="pokemon-card">
+            <h4 th:text="'Pokemon #' + ${stat.count}"></h4>
+            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].pokemonName}" placeholder="포켓몬 이름">
+            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].item}" placeholder="도구">
+            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].ability}" placeholder="특성">
+            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].nature}" placeholder="성격">
+            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].effortValues}" placeholder="노력치 (H252...)">
+            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].moves}" placeholder="기술 (지진, 스톤샤워...)">
+        </div>
+
+        <button type="submit">파티 저장하기</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>기록된 파티 목록</title>
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    th { background-color: #f4f4f4; }
+    .pokemon-tag {
+      display: inline-block; background: #e1f5fe; color: #0277bd;
+      padding: 2px 8px; border-radius: 4px; margin-right: 5px; font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+<div style="padding: 20px;">
+  <h1>내가 기록한 남의 파티들</h1>
+  <a href="/parties/new">[새 파티 등록하기]</a>
+
+  <table>
+    <thead>
+    <tr>
+      <th>번호</th>
+      <th>트레이너</th>
+      <th>파티 설명</th>
+      <th>포켓몬 엔트리</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="party : ${parties}">
+      <td th:text="${party.id}">1</td>
+      <td th:text="${party.trainerName}">박세준</td>
+      <td th:text="${party.partyDescription}">우승 파티</td>
+      <td>
+                <span th:each="sample : ${party.pokemonSamples}"
+                      th:text="${sample.pokemonName}"
+                      class="pokemon-tag"></span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
