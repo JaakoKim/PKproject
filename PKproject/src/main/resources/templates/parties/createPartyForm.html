@@ -2,38 +2,106 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>파티 등록</title>
+    <title>새 파티 등록</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        .pokemon-card { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+
+        /* 폼 입력창 포커스 시 부드러운 전환 효과 */
+        input { transition: all 0.2s ease-in-out; }
     </style>
 </head>
-<body>
-<div class="container">
-    <h1>남의 파티 기록하기</h1>
-    <form th:action="@{/parties/new}" th:object="${partyForm}" method="post">
-        <div>
-            <label>트레이너 이름:</label>
-            <input type="text" th:field="*{trainerName}" placeholder="예: 박세준">
-        </div>
-        <div>
-            <label>파티 설명:</label>
-            <input type="text" th:field="*{partyDescription}" placeholder="예: 시즌 1위 파티">
+<body class="text-slate-800 antialiased min-h-screen pb-16">
+
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+
+    <div class="mb-10">
+        <a href="/parties" class="text-sm font-medium text-indigo-600 hover:text-indigo-700 mb-4 inline-block flex items-center gap-1">
+            <span aria-hidden="true">&larr;</span> 목록으로 돌아가기
+        </a>
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 flex items-center gap-3">
+            <span class="text-4xl">📝</span>
+            <span class="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">새 파티 기록하기</span>
+        </h1>
+        <p class="mt-2 text-sm text-slate-500">인상 깊었던 파티의 세부 스펙을 꼼꼼하게 남겨보세요.</p>
+    </div>
+
+    <form th:action="@{/parties/new}" th:object="${partyForm}" method="post" class="space-y-8">
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
+            <h3 class="text-lg font-semibold text-slate-900 mb-5 border-b border-slate-100 pb-3">기본 정보</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">트레이너 이름</label>
+                    <input type="text" th:field="*{trainerName}" placeholder="예: 아따시"
+                           class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-slate-50 focus:bg-white">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-2">파티 설명</label>
+                    <input type="text" th:field="*{partyDescription}" placeholder="예: S31 1234등에서 만난파티"
+                           class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-slate-50 focus:bg-white">
+                </div>
+            </div>
         </div>
 
-        <hr>
-        <h3>포켓몬 엔트리 (6마리)</h3>
-        <div th:each="sample, stat : *{pokemonSamples}" class="pokemon-card">
-            <h4 th:text="'Pokemon #' + ${stat.count}"></h4>
-            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].pokemonName}" placeholder="포켓몬 이름">
-            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].item}" placeholder="도구">
-            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].ability}" placeholder="특성">
-            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].nature}" placeholder="성격">
-            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].effortValues}" placeholder="노력치 (H252...)">
-            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].moves}" placeholder="기술 (지진, 스톤샤워...)">
+        <div>
+            <h3 class="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+                포켓몬 엔트리 <span class="text-xs font-normal bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">6마리</span>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div th:each="sample, stat : *{pokemonSamples}" class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 relative overflow-hidden group hover:border-indigo-200 transition-colors">
+
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-400 to-purple-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+
+                    <h4 class="text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider" th:text="'Slot 0' + ${stat.count}">SLOT 01</h4>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-medium text-slate-500 mb-1">포켓몬 이름</label>
+                            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].pokemonName}" placeholder="망나뇽"
+                                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">지닌 도구</label>
+                            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].item}" placeholder="구애머리띠"
+                                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">특성</label>
+                            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].ability}" placeholder="멀티스케일"
+                                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">성격</label>
+                            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].nature}" placeholder="고집"
+                                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-500 mb-1">노력치</label>
+                            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].effortValues}" placeholder="H4 A252 S252"
+                                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-medium text-slate-500 mb-1">기술 배치</label>
+                            <input type="text" th:field="*{pokemonSamples[__${stat.index}__].moves}" placeholder="역린 / 지진 / 신속 / 불꽃펀치"
+                                   class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <button type="submit">파티 저장하기</button>
+        <div class="flex justify-end pt-6 border-t border-slate-200">
+            <button type="submit"
+                    class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
+                파티 저장하기
+            </button>
+        </div>
+
     </form>
 </div>
+
 </body>
 </html>

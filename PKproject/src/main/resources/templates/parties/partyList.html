@@ -2,44 +2,83 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
-  <title>기록된 파티 목록</title>
+  <title>포켓몬 파티 아카이브</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-    th { background-color: #f4f4f4; }
-    .pokemon-tag {
-      display: inline-block; background: #e1f5fe; color: #0277bd;
-      padding: 2px 8px; border-radius: 4px; margin-right: 5px; font-size: 0.9em;
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+
+    /* 은은한 유리 질감 카드 (Glassmorphism) */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+
+    /* 포켓몬 이미지 애니메이션 */
+    .pokemon-sprite {
+      transition: transform 0.2s ease-in-out;
+    }
+    .pokemon-sprite:hover {
+      transform: translateY(-5px) scale(1.15);
     }
   </style>
 </head>
-<body>
-<div style="padding: 20px;">
-  <h1>내가 기록한 남의 파티들</h1>
-  <a href="/parties/new">[새 파티 등록하기]</a>
+<body class="text-slate-800 antialiased min-h-screen pb-12">
 
-  <table>
-    <thead>
-    <tr>
-      <th>번호</th>
-      <th>트레이너</th>
-      <th>파티 설명</th>
-      <th>포켓몬 엔트리</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="party : ${parties}">
-      <td th:text="${party.id}">1</td>
-      <td th:text="${party.trainerName}">박세준</td>
-      <td th:text="${party.partyDescription}">우승 파티</td>
-      <td>
-                <span th:each="sample : ${party.pokemonSamples}"
-                      th:text="${sample.pokemonName}"
-                      class="pokemon-tag"></span>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight text-slate-900 flex items-center gap-3">
+        <span class="text-4xl">🎮</span>
+        <span class="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">파티 아카이브</span>
+      </h1>
+      <p class="mt-2 text-sm text-slate-500">내가 기록한 남의 파티를 모아보는 공간입니다.</p>
+    </div>
+    <a href="/parties/new"
+       class="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 transition-all">
+      + 새 파티 등록하기
+    </a>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+    <div th:each="party : ${parties}" class="glass-card rounded-2xl shadow-sm hover:shadow-md transition-shadow p-6 relative overflow-hidden group">
+
+      <div class="flex justify-between items-start mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900" th:text="${party.trainerName} + '의 파티'">박세준의 파티</h3>
+          <p class="text-sm text-slate-500 mt-1" th:text="${party.partyDescription}">우승 파티</p>
+        </div>
+        <span class="inline-flex items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600" th:text="'No.' + ${party.id}">
+          No.1
+        </span>
+      </div>
+
+      <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 mt-6">
+
+        <div th:each="sample : ${party.pokemonSamples}" class="flex flex-col items-center gap-2">
+          <div class="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center shadow-inner relative group-hover:bg-indigo-50 transition-colors">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
+                 class="pokemon-sprite w-12 h-12 object-contain drop-shadow-sm" alt="pokemon">
+          </div>
+          <span class="text-[10px] font-medium text-slate-600 bg-white border border-slate-200 px-2 py-1 rounded-md shadow-sm truncate max-w-full text-center"
+                th:text="${sample.pokemonName}">
+            피카츄
+          </span>
+        </div>
+
+      </div>
+
+      <div class="mt-6 pt-4 border-t border-slate-100 flex justify-end">
+        <button class="text-sm font-medium text-indigo-600 hover:text-indigo-700 flex items-center gap-1 transition-colors">
+          상세 스펙 보기 <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
 </div>
+
 </body>
 </html>
