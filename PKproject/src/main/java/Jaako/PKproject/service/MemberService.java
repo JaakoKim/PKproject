@@ -31,4 +31,14 @@ public class MemberService {
                     throw new IllegalStateException("이미 존재하는 아이디입니다.");
                 });
     }
+
+    /**
+     * 로그인
+     * @return null이면 로그인 실패
+     */
+    public Member login(String loginId, String password) {
+        return memberRepository.findByLoginId(loginId)
+                .filter(m -> m.getPassword().equals(password))
+                .orElse(null);
+    }
 }

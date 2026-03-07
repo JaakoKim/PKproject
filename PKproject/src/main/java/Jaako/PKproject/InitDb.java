@@ -17,6 +17,7 @@ public class InitDb {
         try {
             Member member = new Member();
             member.setLoginId("jaako");
+            member.setPassword("1234");
             member.setNickname("코딩하는지우");
             memberService.join(member); // 여기서 1번 회원이 생성됨
             System.out.println("✅ 초기 회원 1명 세팅 완료");

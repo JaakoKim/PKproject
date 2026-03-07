@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>로그인 - 파티 아카이브</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        input { transition: all 0.2s ease-in-out; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex items-center justify-center p-4">
+
+<div class="max-w-md w-full">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold tracking-tight text-slate-900 flex items-center justify-center gap-3">
+            <span class="text-4xl">🎮</span>
+            <span class="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">파티 아카이브</span>
+        </h1>
+        <p class="mt-3 text-sm text-slate-500">나만의 포켓몬 파티를 기록하고 관리하세요.</p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-8">
+
+        <div th:if="${loginError}" class="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg text-center" th:text="${loginError}">
+            에러 메시지
+        </div>
+
+        <form th:action="@{/login}" th:object="${loginForm}" method="post" class="space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">아이디</label>
+                <input type="text" th:field="*{loginId}" placeholder="아이디를 입력하세요" required
+                       class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-slate-50 focus:bg-white">
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">비밀번호</label>
+                <input type="password" th:field="*{password}" placeholder="비밀번호를 입력하세요" required
+                       class="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 bg-slate-50 focus:bg-white">
+            </div>
+
+            <button type="submit"
+                    class="w-full flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all mt-4">
+                로그인
+            </button>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-slate-500">
+            아직 계정이 없으신가요? <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">회원가입</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
